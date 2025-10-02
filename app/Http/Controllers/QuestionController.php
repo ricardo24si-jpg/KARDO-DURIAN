@@ -4,36 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class HomeControlleer extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-       // public function index()
-{
-		/* Cara 1 */
-    $data ['username']        = 'Heroku';
-    $data ['last_login']      = date('Y-m-d H:i:s');
-    $data ['list_pendidikan'] = ['SD','SMP','SMA','S1','S2','S3'];
-    return view('home', $data );
-
-    /* atau Cara 2 */
-    $data = [
-	      'username'        => 'Heroku',
-	      'last_login'      => date('Y-m-d H:i:s'),
-	      'list_pendidikan' => ['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3']
-	  ];
-	  return view('home', $data);
-
-	  /* atau Cara 3 */
-	  $username        = 'Heroku';
-		$last_login      = date('Y-m-d H:i:s');
-		$list_pendidikan = ['SD', 'SMP', 'SMA', 'S1', 'S2', 'S3'];
-    return view('home', compact('username', 'last_login', 'list_pendidikan'));
-
-}
+        //
     }
 
     /**
@@ -49,7 +27,22 @@ class HomeControlleer extends Controller
      */
     public function store(Request $request)
     {
-        //
+       //dd($request->all());
+       	$request->validate([
+		    'nama'  => 'required|max:10',
+		    'email' => ['required','email'],
+		    'pertanyaan' => 'required|max:300|min:8',
+        ],[
+            'nama.required'=> 'nama tidak boleh kosong',
+            'email.email'=> 'email tidak valid'
+		]);
+
+       $data['nama'] = $request->nama;
+       $data['email'] = $request->email;
+       $data['pertanyaan'] = $request->pertanyaan;
+
+       return view('home-question-respon', $data);
+
     }
 
     /**
@@ -71,7 +64,7 @@ class HomeControlleer extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id )
+    public function update(Request $request, string $id)
     {
         //
     }
